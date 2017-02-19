@@ -1,0 +1,21 @@
+<script
+  id="hull-js-sdk"
+  access-token="{{ customer.metafields.hull.access_token }}"
+  customer-id="{{customer.id}}"
+  org-url="https://8828fe18.hullapp.io"
+  platform-id="5696d5d327532535e6000b4e"
+  js-url="https://js.hull.io/0.10.0/hull.js.gz"
+  src="https://js.hull.io/0.10.0/hull.js.gz"
+  callback-url="/a/hull-callback"
+  raven-dsn="" async></script>
+<script>
+window.HullShopify = (function() {
+  var data = { template: {{template | json }} };
+  {% if cart %}data.cart = {{ cart | json }};{% endif %}
+  {% if product %}data.product = {{ product | json }};{% endif %}
+  {% if collection %}data.collection = {{ collection | json }};{% endif %}
+  {% if customer %}data.customer = { id: {{ customer.id | json }} };{% endif %}
+  {% if search %}data.search = { results_count: {{search.results_count}}, terms: {{ search.terms | json }}}{% endif %}
+  return data;
+})();
+</script>

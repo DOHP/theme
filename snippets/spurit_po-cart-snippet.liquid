@@ -1,0 +1,8 @@
+<script>
+	var SPOParams = {
+		"id" : "bde10dcfb76b90b32efa6eb3149e5f03",
+		"apiScript" : "{{ 'api.jquery.js' | shopify_asset_url }}",
+		"items" : {{ cart.items | json }}
+	};
+</script>
+<script src="//s3.amazonaws.com/shopify-apps/pre-order/js/common.js"></script>

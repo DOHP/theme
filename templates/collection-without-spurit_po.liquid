@@ -1,0 +1,104 @@
+<!-- templates/collection.liquid -->
+{% comment %}
+
+  For more information on collection tags:
+    - http://docs.shopify.com/themes/liquid-variables/collection
+
+{% endcomment %}
+
+{% assign products_per_page = settings.collection_paginate_by %}
+
+{% paginate collection.products by products_per_page %}
+
+<div class="grid--full collection-list">
+
+  {% comment %}
+    Different markup if a collection description exists
+  {% endcomment %}
+  <div class="collection-list__header grid-item medium--three-quarters push--medium--one-eighth large--three-quarters push--large--one-eighth">
+    <header class="section-header">
+      <h1 class="section-header--title">{{ collection.title }}</h1>
+      {% if collection.description != blank %}
+        <div class="rte rte--header">
+          {{ collection.description }}
+        </div>
+      {% endif %}
+      {% if settings.collection_tags_enable or settings.collection_sort_enable %}
+        <div class="grid--full collection-sorting">
+          {% if settings.collection_tags_enable %}
+            {% include 'collection-tags' %}
+          {% endif %}
+          {% if settings.collection_sort_enable %}
+            {% include 'collection-sorting' %}
+          {% endif %}
+        </div>
+      {% endif %}
+    </header>
+  </div>
+
+  <div class="grid-item medium--three-quarters push--medium--one-eighth large--three-quarters push--large--one-eighth text-center">
+    {% comment %}
+      Loop through our products in the current collection.
+      See the snippet 'product-grid-item' for the layout.
+    {% endcomment %}
+
+    {% for product in collection.products %}
+
+      {% include 'product-grid-item' %}
+
+    {% else %}
+
+      {% if collection.handle == 'all' %}
+        {% unless emptyState %}
+          {{ 'theme-onboarding.css' | global_asset_url | stylesheet_tag }}
+          {% assign emptyState = true %}
+        {% endunless %}
+        <div class="helper-section">
+          <div class="helper-note">
+            <span class="helper-icon"></span>
+            <h3>{{ 'collections.onboarding.modal_title' | t }}</h3>
+            <p>{{ 'collections.onboarding.no_products_html' | t }}</p>
+            <p><a href="/admin/products/new" class="admin-btn-primary">{{ 'collections.onboarding.add_product' | t }}</a></p>
+          </div>
+
+          <div class="helper-content">
+            {% assign index = 1 %}
+            {% for i in (1..5) %}
+              {% case i %}
+                {% when 4 %}
+                  {% assign index = 1 %}
+                {% when 5 %}
+                  {% assign index = 2 %}
+              {% endcase %}
+              <div class="product-item{% if grid_item_width %} grid-item {{grid_item_width}} {% else %} fluid-grid-item{% endif %} text-center">
+                <a href="/admin/products" class="grid-link__image">
+                  {% capture imageUrl %}//cdn.shopify.com/s/images/themes/product-{{ index }}.png{% endcapture %}
+                  {{ imageUrl | img_tag }}
+                </a>
+                <p class="h6"><a href="/admin/products">{{ 'home_page.onboarding.product_title' | t }}</a></p>
+                <p class="h6">$19.99</p>
+              </div>
+              {% assign index = index | plus: 1 %}
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+
+        <div class="grid-item">
+          <p>{{ 'collections.general.no_matches' | t }}</p>
+        </div>
+
+      {% endif %}
+
+    {% endfor %}
+
+  </div>
+
+  {% if paginate.pages > 1 %}
+    <div class="grid-item one-whole text-center">
+      {% include 'pagination-custom' %}
+    </div>
+  {% endif %}
+
+</div>
+{% endpaginate %}

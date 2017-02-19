@@ -1,0 +1,17 @@
+<script>
+    var SNBEParams = {
+        "id" : "7be84d52a22e7c1c43e1455a0ed5183c",
+        "apiScript" : "{{ 'api.jquery.js' | shopify_asset_url }}",
+        "moneyFormat": "{{shop.money_format | strip_html}}",
+        "fullMoneyFormat": "{{shop.money_with_currency_format | strip_html}}",
+        "customer" : {}
+    };
+    {% if  customer %}
+        SNBEParams.customer.email = "{{ customer.email }}";
+        {% if customer.default_address != nil %}
+            SNBEParams.customer.country_code = "{{ customer.default_address.country_code }}";
+        {% else %}
+            SNBEParams.customer.country_code = null;
+        {% endif %}
+    {% endif %}
+</script>
