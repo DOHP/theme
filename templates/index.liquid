@@ -1,0 +1,36 @@
+<!--Twitter Homepage Card-->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@d_o_h_p" />
+<meta name="twitter:title" content="D.O.H.P. - Decorate Our Home Planet" />
+<meta name="twitter:description" content="We plant 3TREES for Every Shirt Sold! @d_o_h_p" />
+<meta name="twitter:image" content="https://cdn.shopify.com/s/files/1/0871/2118/t/3/assets/logo.png" />
+<!--end card-->
+
+{% comment %}
+
+  This is the homepage of your site.
+
+  More info on global variables (available on all templates):
+    - http://docs.shopify.com/themes/liquid-variables/global
+{% endcomment %}
+
+{% if settings.home_section_1 != blank %}
+  {% include settings.home_section_1 %}
+{% endif %}
+
+{% if settings.home_section_2 != blank %}
+  {% unless settings.home_section_1 == 'slider' %}
+    <hr>
+  {% endunless %}
+  {% include settings.home_section_2 %}
+{% endif %}
+
+{% if settings.home_section_3 != blank %}
+  <hr>
+  {% include settings.home_section_3 %}
+{% endif %}
+
+{% if settings.home_section_4 != blank %}
+  <hr>
+  {% include settings.home_section_4 %}
+{% endif %}
